@@ -3,10 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +39,9 @@ public class Hotel {
 
     @Column(nullable = false)
     private Boolean active;
+
+    @OneToMany(mappedBy = "hotel",fetch = FetchType.EAGER)
+    private List<Room> rooms;
 
     @ManyToOne
     private User owner;
