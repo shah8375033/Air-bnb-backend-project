@@ -1,6 +1,4 @@
 package com.project.airBnbApp.entity;
-
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,13 +24,12 @@ public class Hotel {
 
     private String city;
 
-    @Type(ListArrayType.class)
-    @Column(name = "photos", columnDefinition = "TEXT[]")
-    private List<String> photos;
-
-    @Type(ListArrayType.class)
     @Column(columnDefinition = "TEXT[]")
-    private List<String> amenities;
+    private String[] photos;
+
+
+    @Column(columnDefinition = "TEXT[]")
+    private String[] amenities;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -46,5 +43,7 @@ public class Hotel {
     @Column(nullable = false)
     private Boolean active;
 
+    @ManyToOne
+    private User owner;
 
 }
