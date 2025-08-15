@@ -60,13 +60,16 @@ public class RoomServiceImplementation implements RoomService{
         return modelMapper.map(room, RoomDto.class);
     }
 
+
+
+    @Transactional
     @Override
     public void deleteRoomById(Long roomId) {
         log.info("Deleting room with id: {}"+roomId);
         Room room=roomRepository
                 .findById(roomId)
                 .orElseThrow(()-> new ResourceNotFoundException("Room not found with id:"+roomId));
-        inventoryService.deleteFutureInventories(room);
+        inventoryService.deleteAllInventories(room);
         roomRepository.deleteById(roomId);
 
     }
