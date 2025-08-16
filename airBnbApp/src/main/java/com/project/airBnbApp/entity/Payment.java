@@ -35,4 +35,7 @@ public class Payment{
     @Column(nullable = false)
     private PaymentStatus status;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Booking booking;
+
 }
