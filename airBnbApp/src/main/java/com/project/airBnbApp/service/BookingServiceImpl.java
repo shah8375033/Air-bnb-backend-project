@@ -32,14 +32,15 @@ public class BookingServiceImpl implements BookingService {
     @Transactional
     public BookingDto intialiseBooking(BookingRequest bookingRequest) {
 
-        log.info("intialiseBooking for hotel:{},room :{},date :{}-{} ",bookingRequest.getHotelId(),bookingRequest.getRoomId(),bookingRequest.getCheckInDate(),bookingRequest.getCheckOutDate());
+        log.info("intialiseBooking for hotel:{},room :{},date :{}-{} ",bookingRequest.getHotelId()
+                ,bookingRequest.getRoomId(),bookingRequest.getCheckInDate(),bookingRequest.getCheckOutDate());
 
         Hotel hotel= hotelRepository.findById(bookingRequest.getHotelId())
                 .orElseThrow(()-> new ResourceNotFoundException("Hotel not found with ID:"+bookingRequest.getHotelId()));
         Room room= roomRepository.findById(bookingRequest.getRoomId())
                 .orElseThrow(()-> new ResourceNotFoundException("Room not found with ID:"+bookingRequest.getRoomId()));
-        List<Inventory> inventoryList = inventoryRepository.findAndLockAvailableInventory(room.getId(), bookingRequest.getCheckInDate(),
-                bookingRequest.getCheckOutDate(),bookingRequest.getRoomsCount());
+        List<Inventory> inventoryList = inventoryRepository.findAndLockAvailableInventory(room.getId(), bookingRequest.getCheckInDate()
+                , bookingRequest.getCheckOutDate(),bookingRequest.getRoomsCount());
 
         long daysCount= ChronoUnit.DAYS.between(bookingRequest.getCheckInDate(),bookingRequest.getCheckOutDate())+1;
         if(daysCount!=inventoryList.size()){
