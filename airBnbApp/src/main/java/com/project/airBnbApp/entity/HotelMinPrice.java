@@ -1,29 +1,33 @@
 package com.project.airBnbApp.entity;
 
-import com.project.airBnbApp.entity.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
-@Table
-public class Payment{
+@NoArgsConstructor
+public class HotelMinPrice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true,nullable = false)
-    private String transactionId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="hotel_id",nullable = false)
+    private Hotel hotel;
 
-    @Column(nullable = false,precision = 10,scale = 2)
-    private BigDecimal amount;
+    @Column(nullable = false)
+    private LocalDate date;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal price;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -31,8 +35,9 @@ public class Payment{
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private PaymentStatus status;
 
+    public HotelMinPrice(Hotel hotel, LocalDate date) {
+        this.hotel=hotel;
+        this.date=date;
+    }
 }

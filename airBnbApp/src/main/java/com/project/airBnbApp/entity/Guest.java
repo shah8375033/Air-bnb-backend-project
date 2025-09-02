@@ -28,6 +28,4 @@ public class Guest {
     @Column(nullable = false)
     private Integer age;
 
-    @ManyToMany(mappedBy = "guest",fetch = FetchType.LAZY)
-    private Set<Booking> bookings;
 }
