@@ -1,5 +1,6 @@
 package com.project.airBnbApp.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -45,6 +46,8 @@ public class Hotel {
     @JsonIgnore
     private List<Room> rooms;
 
+
+    @JsonIgnore
     @ManyToOne(optional=false,fetch =  FetchType.LAZY)
     private User owner;
 
