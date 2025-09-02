@@ -45,7 +45,7 @@ public class Hotel {
     @JsonIgnore
     private List<Room> rooms;
 
-    @ManyToOne(optional=false)
+    @ManyToOne(optional=false,fetch =  FetchType.LAZY)
     private User owner;
 
 }

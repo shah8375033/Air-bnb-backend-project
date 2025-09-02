@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -73,6 +74,7 @@ public class InventoryServiceImplementation implements InventoryService {
 //        return hotelPage.map((element) -> modelMapper.map(element,HotelDto.class));
 //    }
 @Override
+@Transactional
 public Page<HotelPriceDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
     log.info("searching hotels {} city from {} to {}",hotelSearchRequest.getCity(),hotelSearchRequest.getCity()
             ,hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate());

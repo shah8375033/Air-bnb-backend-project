@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,11 @@ public class BookingServiceImpl implements BookingService {
     private final RoomRepository  roomRepository;
     private final InventoryRepository inventoryRepository;
     private final GuestRepository guestRepository;
+    private final CheckOutService  checkOutService;
+
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     ModelMapper modelMapper = new ModelMapper();
     @Override
     @Transactional
@@ -69,7 +75,7 @@ public class BookingServiceImpl implements BookingService {
                 .checkOutDate(bookingRequest.getCheckOutDate())
                 .user(getCurrentUser())
                 .roomCount(bookingRequest.getRoomsCount())
-                .amount(BigDecimal.TEN)
+                .amount(BigDecimal.valueOf(100))
                 .build();
        booking= bookingRepository.save(booking);
        return modelMapper.map(booking,BookingDto.class);
@@ -103,6 +109,28 @@ public class BookingServiceImpl implements BookingService {
         booking=bookingRepository.save(booking);
         return modelMapper.map(booking,BookingDto.class);
     }
+
+
+    @Override
+    @Transactional
+    public String initiatePayments(Long bookingId) {
+        Booking booking=bookingRepository.findById(bookingId)
+                .orElseThrow(()-> new ResourceNotFoundException("Booking not found with id:"+bookingId));
+        User user=getCurrentUser();
+        if(!user.equals(booking.getUser())){
+            throw new UnAuthorisedException("Booking does not belongs to id:"+user.getId());
+        }
+        if(hasBookingExpired(booking)) {
+            throw new IllegalStateException("Booking has expired");
+        }
+        String sessionUrl=checkOutService.getCheckoutSession(booking,
+                frontendUrl+"/payment/success",frontendUrl+"/payment/failure");
+
+        booking.setBookingStatus(BookingStatus.PAYMENTS_PENDING);
+
+        return sessionUrl;
+    }
+
     public boolean hasBookingExpired(Booking booking) {
         return booking.getCreatedAt().plusMinutes(10).isBefore(LocalDateTime.now());
     }

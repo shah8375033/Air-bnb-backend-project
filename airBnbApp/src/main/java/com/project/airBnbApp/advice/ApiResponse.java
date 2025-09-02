@@ -1,5 +1,6 @@
 package com.project.airBnbApp.advice;
 
+
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -24,4 +25,5 @@ public class ApiResponse<T> {
         this();
         this.error = error;
     }
+
 }
