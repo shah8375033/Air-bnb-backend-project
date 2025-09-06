@@ -2,6 +2,9 @@ package com.project.airBnbApp.service;
 
 import com.project.airBnbApp.dto.HotelDto;
 import com.project.airBnbApp.dto.HotelInfoDto;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface HotelService {
     HotelDto createNewHotel(HotelDto hotelDto);
@@ -10,4 +13,6 @@ public interface HotelService {
     void deleteHotelById(Long id);
     void activateHotel(Long id);
     HotelInfoDto getHotelInfoById(Long hotelId);
+
+    List<HotelDto> getAllHotels();
 }

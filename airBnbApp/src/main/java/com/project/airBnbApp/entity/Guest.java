@@ -1,5 +1,6 @@
 package com.project.airBnbApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.airBnbApp.entity.enums.Gender;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +18,7 @@ public class Guest {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     private String name;
@@ -28,4 +29,7 @@ public class Guest {
     @Column(nullable = false)
     private Integer age;
 
+    @ManyToMany(mappedBy ="guests", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Booking> bookings;
 }

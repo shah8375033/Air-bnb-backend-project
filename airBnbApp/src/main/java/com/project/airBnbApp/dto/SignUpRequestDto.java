@@ -1,5 +1,6 @@
 package com.project.airBnbApp.dto;
 
+import com.project.airBnbApp.entity.enums.Role;
 import lombok.Data;
 
 @Data
