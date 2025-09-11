@@ -1,6 +1,4 @@
 package com.project.airBnbApp.utils;
-
-import com.project.airBnbApp.dto.UserDto;
 import com.project.airBnbApp.entity.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 

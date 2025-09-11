@@ -1,4 +1,5 @@
 package com.project.airBnbApp.entity;
+import com.project.airBnbApp.entity.enums.AuthProviderType;
 import com.project.airBnbApp.entity.enums.Gender;
 import com.project.airBnbApp.entity.enums.Role;
 import jakarta.persistence.*;
@@ -18,7 +19,9 @@ import java.util.stream.Collectors;
 @Entity
 @Getter
 @Setter
-@Table(name="app_user")
+@Table(name="app_user",indexes = {
+        @Index(name = "idx_provider_id_provider_type",columnList = "providerId,providerType")
+})
 
 
 public class User implements UserDetails {
@@ -36,8 +39,12 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
     private String password;
+
+    private String providerId;
+
+    @Enumerated(EnumType.STRING)
+    private AuthProviderType providerType;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
